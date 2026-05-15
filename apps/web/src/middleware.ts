@@ -125,8 +125,8 @@ export default async function authMiddleware(request: NextRequest) {
       //     }
       //   );
 
-      //   const orgId = (organizationsList as any[])?.[0]?.id as string;
-      //   const orgRole = (organizationsList as any[])?.[0]?.role as string;
+      //   const orgId = organizationsList?.[0]?.id as string;
+      //   const orgRole = organizationsList?.[0]?.role as string;
 
       //   if (orgRole !== "member") {
       //     const switchRes = await betterFetch(
@@ -155,7 +155,7 @@ export default async function authMiddleware(request: NextRequest) {
         return NextResponse.next();
       }
 
-      // Non-admin users (any role or no role) → redirect to home
+      // Non-admin users redirect to home.
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

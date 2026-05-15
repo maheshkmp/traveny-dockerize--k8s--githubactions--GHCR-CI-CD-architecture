@@ -36,6 +36,10 @@ interface SignupFormProps {
   type?: "agent" | "user";
 }
 
+type SignupResultDataWithSession = {
+  session?: unknown;
+};
+
 export function SignupForm({
   className,
   type = "user",
@@ -90,7 +94,7 @@ export function SignupForm({
       console.log("[Signup] Result:", {
         hasError: !!result?.error,
         hasData: !!result?.data,
-        hasSession: !!(result?.data as any)?.session,
+        hasSession: !!(result?.data as SignupResultDataWithSession | undefined)?.session,
         emailVerified: result?.data?.user?.emailVerified
       });
 
@@ -99,7 +103,7 @@ export function SignupForm({
       }
 
       // Security check: Ensure no session was created before email verification
-      if ((result?.data as any)?.session) {
+      if ((result?.data as SignupResultDataWithSession | undefined)?.session) {
         console.warn("[Signup] WARNING: Session was created before email verification!");
       }
 

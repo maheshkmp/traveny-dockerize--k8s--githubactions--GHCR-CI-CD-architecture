@@ -78,7 +78,7 @@ export function ForgotPasswordForm({
             Reset Your Password
           </CardTitle>
           <CardDescription className="text-base">
-            Enter your email and we'll send you a 6-digit verification code
+            Enter your email and we&apos;ll send you a 6-digit verification code
           </CardDescription>
         </CardHeader>
         <CardContent>

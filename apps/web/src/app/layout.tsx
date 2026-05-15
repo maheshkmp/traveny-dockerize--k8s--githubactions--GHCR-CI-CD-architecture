@@ -7,9 +7,6 @@ import {
   fontDancingScript, fontPacifico, fontGreatVibes, fontSatisfy,
   fontSacramento, fontCaveat, fontAllura, fontPinyonScript, fontAlexBrush
 } from "@/lib/fonts";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: {
@@ -65,10 +62,7 @@ export default function RootLayout({
       <body
         className={`${fontHeading.variable} ${fontSans.variable} ${fontInstrumentSerif.variable} ${fontDmSans.variable} ${fontDancingScript.variable} ${fontPacifico.variable} ${fontGreatVibes.variable} ${fontSatisfy.variable} ${fontSacramento.variable} ${fontCaveat.variable} ${fontAllura.variable} ${fontPinyonScript.variable} ${fontAlexBrush.variable} font-sans antialiased`}
       >
-        <Header />
         {children}
-        <Footer />
-        <Toaster richColors position="top-center" duration={4000} />
       </body>
     </html>
   );

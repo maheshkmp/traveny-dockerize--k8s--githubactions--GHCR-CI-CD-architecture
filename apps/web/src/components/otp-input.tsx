@@ -103,12 +103,14 @@ export function OTPInput({
   // Public method to clear all inputs
   useEffect(() => {
     if (error) {
-      // Clear all inputs when error is set
-      setOtp(Array(length).fill(""));
-      // Refocus first input
-      setTimeout(() => {
+      const resetTimer = window.setTimeout(() => {
+        // Clear all inputs when error is set
+        setOtp(Array(length).fill(""));
+        // Refocus first input
         inputRefs.current[0]?.focus();
       }, 0);
+
+      return () => window.clearTimeout(resetTimer);
     }
   }, [error, length]);
 

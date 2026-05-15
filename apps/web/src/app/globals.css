@@ -9,6 +9,19 @@
 
   --font-heading: var(--font-heading);
   --font-sans: var(--font-sans);
+  --font-playfair: var(--font-playfair);
+  --font-dm: var(--font-dm);
+
+  --color-gold: #C9A84C;
+  --color-gold-light: #E8C87A;
+  --color-gold-pale: #F5EDD6;
+  --color-brand-black: #0A0A0B;
+  --color-brand-charcoal: #141416;
+  --color-brand-dark: #1C1C1F;
+  --color-brand-mid: #2E2E33;
+  --color-brand-muted: #6B6B75;
+  --color-brand-light: #ADADB8;
+  --color-brand-snow: #FAFAFA;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -118,11 +131,25 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    background-color: #0A0A0B;
+    color: #FAFAFA;
+  }
+
+  ::selection {
+    background: #C9A84C;
+    color: #0A0A0B;
+  }
+
+  input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
   }
 }
 

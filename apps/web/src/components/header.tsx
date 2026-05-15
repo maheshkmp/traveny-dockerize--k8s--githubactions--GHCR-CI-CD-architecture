@@ -6,6 +6,10 @@ import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 import { LogOut, SparklesIcon, ShieldCheck, LayoutDashboard, Menu, X, Briefcase, Settings2 } from "lucide-react";
 
+type SessionUserWithRole = {
+    role?: string;
+};
+
 export function Header() {
     const { data: session, isPending } = authClient.useSession();
     const [mounted, setMounted] = useState(false);
@@ -13,10 +17,13 @@ export function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
 
     useEffect(() => {
-        setMounted(true);
+        const mountedTimer = window.setTimeout(() => setMounted(true), 0);
         const onScroll = () => setScrolled(window.scrollY > 12);
         window.addEventListener("scroll", onScroll, { passive: true });
-        return () => window.removeEventListener("scroll", onScroll);
+        return () => {
+            window.clearTimeout(mountedTimer);
+            window.removeEventListener("scroll", onScroll);
+        };
     }, []);
 
     const handleSignOut = async () => {
@@ -71,7 +78,7 @@ export function Header() {
                     ) : session ? (
                         <div className="flex items-center gap-2">
                             {/* Admin badge */}
-                            {(session.user as any).role === "admin" && (
+                            {(session.user as SessionUserWithRole).role === "admin" && (
                                 <Button asChild variant="outline" size="sm" className="gap-2 border-violet-200 text-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950/30 hidden sm:inline-flex">
                                     <Link href="/admin">
                                         <ShieldCheck className="size-4" />
