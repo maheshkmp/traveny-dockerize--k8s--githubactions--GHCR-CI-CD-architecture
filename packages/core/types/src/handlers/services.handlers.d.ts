@@ -1,0 +1,10 @@
+import type { APIRouteHandler } from "./types";
+import type { SubmitServiceRequestRoute, ListServiceRequestsRoute, GetServiceRequestRoute, ReviewServiceRequestRoute, SendMessageRoute, GetMessagesRoute, GetMyProjectsRoute, UpdateStatusRoute } from "./routes/services.route";
+export declare const submitServiceRequest: APIRouteHandler<SubmitServiceRequestRoute>;
+export declare const listServiceRequests: APIRouteHandler<ListServiceRequestsRoute>;
+export declare const getServiceRequest: APIRouteHandler<GetServiceRequestRoute>;
+export declare const reviewRequest: APIRouteHandler<ReviewServiceRequestRoute>;
+export declare const sendMessage: APIRouteHandler<SendMessageRoute>;
+export declare const getMessages: APIRouteHandler<GetMessagesRoute>;
+export declare const getMyProjects: APIRouteHandler<GetMyProjectsRoute>;
+export declare const updateStatus: APIRouteHandler<UpdateStatusRoute>;
