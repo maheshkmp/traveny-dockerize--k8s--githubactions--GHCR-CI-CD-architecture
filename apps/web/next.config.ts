@@ -22,6 +22,7 @@ try {
 }
 
 const nextConfig: NextConfig = {
+  output: 'standalone',
   // Proxying is now handled by the catch-all API route at /api/[[...path]]/route.ts
   // This approach provides better error handling and cookie forwarding
 };
