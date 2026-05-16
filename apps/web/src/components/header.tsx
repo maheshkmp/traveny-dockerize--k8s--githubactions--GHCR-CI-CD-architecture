@@ -44,8 +44,8 @@ export function Header() {
     return (
         <header
             className={`sticky top-0 z-50 w-full transition-all duration-300 ${scrolled
-                    ? "border-b border-border/60 bg-background/80 backdrop-blur-xl shadow-sm"
-                    : "border-b border-transparent bg-background/60 backdrop-blur-md"
+                    ? "border-b border-brand-warm bg-brand-cream/95 backdrop-blur-md shadow-sm"
+                    : "border-b border-transparent bg-brand-cream/80 backdrop-blur-md"
                 }`}
         >
             <div className="container flex h-16 items-center justify-between px-4 mx-auto max-w-7xl">

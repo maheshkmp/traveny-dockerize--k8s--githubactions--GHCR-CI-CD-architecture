@@ -25,6 +25,7 @@ jobs:
           script: |
             cd ~/projects/traveny
             git pull origin main
+            docker compose build --no-cache web api
             docker compose up --build -d --remove-orphans
             sleep 10
             docker compose exec -T api bunx drizzle-kit push

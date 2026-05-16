@@ -17,25 +17,15 @@ export function BookingPanel() {
   return (
     <section
       id="booking"
-      className="relative z-20 -mt-8 mb-16 px-8 font-dm lg:px-20"
+      className="relative z-20 -mt-6 mb-20 px-8 font-dm lg:px-24"
     >
-      <div className="mx-auto max-w-5xl rounded-2xl border border-brand-border bg-white p-6 shadow-xl shadow-brand-dark/10 md:p-8">
+      <div className="mx-auto max-w-5xl rounded-none border border-brand-warm bg-white p-8 shadow-2xl shadow-brand-navy/10">
         <form onSubmit={onSubmit}>
-          <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-            <div>
-              <span className="mb-2 block text-xs uppercase tracking-widest text-brand-muted">
-                {t.booking.label}
-              </span>
-              <h2 className="font-playfair text-3xl font-semibold text-brand-dark">
-                {t.booking.title}
-              </h2>
-            </div>
-            <a
-              href={t.common.phoneHref}
-              className="cursor-pointer text-sm font-medium uppercase tracking-widest text-gold transition hover:text-gold-dark"
-            >
-              {t.common.phone}
-            </a>
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-6 h-px bg-gold" />
+            <span className="text-xs tracking-[0.2em] uppercase text-brand-muted">
+              {t.booking.label}
+            </span>
           </div>
 
           <div className="grid grid-cols-1 items-end gap-4 lg:grid-cols-4">
@@ -51,7 +41,7 @@ export function BookingPanel() {
                 name="pickup"
                 type="text"
                 placeholder={t.common.pickupPlaceholder}
-                className="rounded border border-brand-border bg-white px-4 py-3.5 text-sm text-brand-dark outline-none transition placeholder:text-brand-muted focus:border-gold focus:ring-1 focus:ring-gold/30"
+                className="rounded-none border border-brand-warm bg-brand-cream px-4 py-3.5 text-sm text-brand-dark outline-none transition placeholder:text-brand-muted focus:border-brand-navy"
               />
             </div>
 
@@ -67,7 +57,7 @@ export function BookingPanel() {
                 name="destination"
                 type="text"
                 placeholder={t.common.destinationPlaceholder}
-                className="rounded border border-brand-border bg-white px-4 py-3.5 text-sm text-brand-dark outline-none transition placeholder:text-brand-muted focus:border-gold focus:ring-1 focus:ring-gold/30"
+                className="rounded-none border border-brand-warm bg-brand-cream px-4 py-3.5 text-sm text-brand-dark outline-none transition placeholder:text-brand-muted focus:border-brand-navy"
               />
             </div>
 
@@ -82,13 +72,13 @@ export function BookingPanel() {
                 id="datetime"
                 name="datetime"
                 type="datetime-local"
-                className="rounded border border-brand-border bg-white px-4 py-3.5 text-sm text-brand-dark outline-none transition focus:border-gold focus:ring-1 focus:ring-gold/30"
+                className="rounded-none border border-brand-warm bg-brand-cream px-4 py-3.5 text-sm text-brand-dark outline-none transition focus:border-brand-navy"
               />
             </div>
 
             <button
               type="submit"
-              className="flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded bg-gold px-7 py-3.5 text-sm font-medium uppercase tracking-widest text-white transition hover:bg-gold-dark"
+              className="flex cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-none bg-brand-navy px-7 py-3.5 text-sm font-medium uppercase tracking-widest text-white transition hover:bg-brand-navyMid"
             >
               <Search className="size-4" aria-hidden="true" />
               {t.booking.search}

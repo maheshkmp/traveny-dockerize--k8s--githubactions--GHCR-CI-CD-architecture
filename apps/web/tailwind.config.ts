@@ -12,15 +12,15 @@ const config: Config = {
           dark: "#A8892E"
         },
         brand: {
-          white: "#FFFFFF",
-          snow: "#FAFAF8",
-          cream: "#F5F0E8",
-          mist: "#EDE8DF",
-          border: "#E2D9CC",
-          muted: "#9A8F82",
-          mid: "#6B6059",
-          dark: "#2C2420",
-          black: "#1A1108"
+          navy: '#0F2340',
+          navyMid: '#1A3557',
+          navyLight: '#243F66',
+          cream: '#FAF7F2',
+          sand: '#F0EAE0',
+          warm: '#E8DFD0',
+          muted: '#8A7E6E',
+          body: '#3D3228',
+          dark: '#1A0F0A',
         }
       },
       fontFamily: {

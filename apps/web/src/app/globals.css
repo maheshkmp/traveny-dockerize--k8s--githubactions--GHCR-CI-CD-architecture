@@ -22,15 +22,15 @@
   --color-gold-light: #E8C87A;
   --color-gold-pale: #FDF6E3;
   --color-gold-dark: #A8892E;
-  --color-brand-white: #FFFFFF;
-  --color-brand-snow: #FAFAF8;
-  --color-brand-cream: #F5F0E8;
-  --color-brand-mist: #EDE8DF;
-  --color-brand-border: #E2D9CC;
-  --color-brand-muted: #9A8F82;
-  --color-brand-mid: #6B6059;
-  --color-brand-dark: #2C2420;
-  --color-brand-black: #1A1108;
+  --color-brand-navy: #0F2340;
+  --color-brand-navyMid: #1A3557;
+  --color-brand-navyLight: #243F66;
+  --color-brand-cream: #FAF7F2;
+  --color-brand-sand: #F0EAE0;
+  --color-brand-warm: #E8DFD0;
+  --color-brand-muted: #8A7E6E;
+  --color-brand-body: #3D3228;
+  --color-brand-dark: #1A0F0A;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -170,4 +170,16 @@
 @keyframes scroll-right {
   0% { transform: translateX(-50%); }
   100% { transform: translateX(0); }
+}
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #FAF7F2;
+  color: #3D3228;
+  font-family: var(--font-dm);
+}
+
+::selection {
+  background: #0F2340;
+  color: #FAF7F2;
 }
