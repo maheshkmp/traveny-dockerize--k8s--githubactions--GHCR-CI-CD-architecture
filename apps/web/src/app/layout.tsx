@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 
 import "./globals.css";
 import {
@@ -8,30 +8,70 @@ import {
   fontSacramento, fontCaveat, fontAllura, fontPinyonScript, fontAlexBrush
 } from "@/lib/fonts";
 
+export const viewport: Viewport = {
+  themeColor: "#C9A84C",
+  width: "device-width",
+  initialScale: 1
+};
+
 export const metadata: Metadata = {
   title: {
-    default: "SaaS Boilerplate",
-    template: "%s | SaaS Boilerplate"
+    default: "Traveny — Sveriges Premiumtaxi",
+    template: "%s | Traveny"
   },
-  description: "A solid foundation for your next big idea.",
-  keywords: ["SaaS", "Boilerplate", "Next.js", "Hono"],
-  authors: [{ name: "SaaS Boilerplate" }],
-  creator: "SaaS Boilerplate",
-  publisher: "SaaS Boilerplate",
+  description:
+    "Boka Sveriges mest pålitliga premiumtaxi. Lyxiga fordon, punktliga hämtningar och förstklassig service — dygnet runt, var som helst i landet.",
+  keywords: [
+    "taxi",
+    "premiumtaxi",
+    "Sverige",
+    "Stockholm",
+    "Göteborg",
+    "Malmö",
+    "flygplatstransfer",
+    "affärsresor",
+    "traveny"
+  ],
+  authors: [{ name: "Traveny AB" }],
+  creator: "Traveny AB",
+  publisher: "Traveny AB",
+  applicationName: "Traveny",
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Traveny"
+  },
   openGraph: {
     type: "website",
-    locale: "en_US",
-    url: "https://example.com",
-    siteName: "SaaS Boilerplate",
-    title: "SaaS Boilerplate",
-    description: "A solid foundation for your next big idea.",
-    images: []
+    locale: "sv_SE",
+    alternateLocale: ["en_US"],
+    url: "https://traveny.com",
+    siteName: "Traveny",
+    title: "Traveny — Sveriges Premiumtaxi",
+    description:
+      "Lyxiga körningar, punktliga hämtningar och förstklassig komfort — dygnet runt, var som helst i landet.",
+    images: [
+      {
+        url: "https://traveny.com/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Traveny — Sveriges Premiumtaxi"
+      }
+    ]
   },
   twitter: {
     card: "summary_large_image",
-    title: "SaaS Boilerplate",
-    description: "A solid foundation for your next big idea.",
-    images: []
+    title: "Traveny — Sveriges Premiumtaxi",
+    description: "Boka premiumtaxi i Sverige på traveny.com",
+    images: ["https://traveny.com/og-image.jpg"]
+  },
+  alternates: {
+    canonical: "https://traveny.com",
+    languages: {
+      "sv-SE": "https://traveny.com",
+      "en-US": "https://traveny.com/en"
+    }
   },
   robots: {
     index: true,
@@ -39,17 +79,17 @@ export const metadata: Metadata = {
     googleBot: {
       index: true,
       follow: true,
-      "max-video-preview": -1,
-      "max-image-preview": "large",
-      "max-snippet": -1
+      "max-image-preview": "large"
     }
   },
   icons: {
-    icon: "/icon.svg",
-    shortcut: "/icon.svg",
-    apple: "/icon.svg"
-  },
-  manifest: "/site.webmanifest"
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/icon-192.png", sizes: "192x192", type: "image/png" },
+      { url: "/icon-512.png", sizes: "512x512", type: "image/png" }
+    ],
+    apple: [{ url: "/apple-icon.png", sizes: "180x180", type: "image/png" }]
+  }
 };
 
 export default function RootLayout({

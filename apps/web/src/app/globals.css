@@ -11,17 +11,26 @@
   --font-sans: var(--font-sans);
   --font-playfair: var(--font-playfair);
   --font-dm: var(--font-dm);
+  --text-display: 5rem;
+  --text-display--line-height: 0.95;
+  --text-display--letter-spacing: -0.02em;
+  --text-display-lg: 7rem;
+  --text-display-lg--line-height: 0.9;
+  --text-display-lg--letter-spacing: -0.03em;
 
   --color-gold: #C9A84C;
   --color-gold-light: #E8C87A;
-  --color-gold-pale: #F5EDD6;
-  --color-brand-black: #0A0A0B;
-  --color-brand-charcoal: #141416;
-  --color-brand-dark: #1C1C1F;
-  --color-brand-mid: #2E2E33;
-  --color-brand-muted: #6B6B75;
-  --color-brand-light: #ADADB8;
-  --color-brand-snow: #FAFAFA;
+  --color-gold-pale: #FDF6E3;
+  --color-gold-dark: #A8892E;
+  --color-brand-white: #FFFFFF;
+  --color-brand-snow: #FAFAF8;
+  --color-brand-cream: #F5F0E8;
+  --color-brand-mist: #EDE8DF;
+  --color-brand-border: #E2D9CC;
+  --color-brand-muted: #9A8F82;
+  --color-brand-mid: #6B6059;
+  --color-brand-dark: #2C2420;
+  --color-brand-black: #1A1108;
 
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -139,17 +148,17 @@
     @apply border-border outline-ring/50;
   }
   body {
-    background-color: #0A0A0B;
-    color: #FAFAFA;
+    background-color: #FAFAF8;
+    color: #2C2420;
   }
 
   ::selection {
     background: #C9A84C;
-    color: #0A0A0B;
+    color: #FFFFFF;
   }
 
   input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
+    filter: none;
   }
 }
 

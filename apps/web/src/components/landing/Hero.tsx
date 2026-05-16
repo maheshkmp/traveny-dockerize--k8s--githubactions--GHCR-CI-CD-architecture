@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 import { useLang } from "@/lib/LangContext";
 
@@ -20,35 +21,47 @@ export function Hero() {
   return (
     <section
       id="top"
-      className="relative grid min-h-screen overflow-hidden bg-brand-black px-5 pb-16 pt-32 md:grid-cols-2 md:items-center md:px-16 md:pb-20 md:pt-32"
+      className="relative flex min-h-screen flex-col overflow-hidden bg-brand-snow"
     >
-      <div className="absolute right-0 top-0 hidden h-full w-[55%] bg-[linear-gradient(135deg,#1a1508_0%,#0A0A0B_60%)] md:block" />
-      <div className="absolute right-0 top-0 hidden h-full w-[55%] bg-[radial-gradient(circle_at_50%_30%,rgba(201,168,76,0.16),transparent_34%),linear-gradient(135deg,rgba(255,255,255,0.05),transparent_48%)] opacity-80 md:block" />
+      <div className="absolute inset-0 z-0">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/images/hero-car.jpg"
+          alt=""
+          className="h-full w-full object-cover object-center"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-brand-snow/92 via-brand-snow/75 to-brand-snow md:bg-gradient-to-r md:from-brand-snow md:via-brand-snow/85 md:to-brand-snow/10" />
+        <div className="absolute inset-0 bg-gradient-to-t from-brand-snow via-transparent to-transparent" />
+      </div>
 
       <motion.div
         initial="hidden"
         animate="visible"
         transition={{ staggerChildren: 0.1 }}
-        className="relative z-10 max-w-xl"
+        className="relative z-10 flex flex-1 flex-col justify-center px-8 pb-16 pt-32 lg:max-w-3xl lg:px-20"
       >
         <motion.div
           variants={fadeUp}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-7 inline-flex items-center gap-2 rounded-full border border-gold/30 bg-gold/10 px-4 py-2 text-xs font-medium uppercase tracking-widest text-gold-light"
+          className="mb-8 flex items-center gap-3"
         >
-          <span className="size-1.5 rounded-full bg-[#FECC02]" />
-          <span>{t.common.swedishFlag}</span>
-          <span>{t.hero.badge}</span>
-          <span className="size-1.5 rounded-full bg-[#006AA7]" />
+          <div className="h-px w-8 bg-gold" />
+          <span className="font-dm text-xs font-medium uppercase tracking-[0.25em] text-brand-muted">
+            {t.hero.eyebrow}
+          </span>
         </motion.div>
 
         <motion.h1
           variants={fadeUp}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-6 font-playfair text-5xl font-bold leading-tight tracking-normal text-brand-snow md:text-7xl"
+          className="mb-6 font-playfair text-6xl font-bold leading-[0.95] text-brand-dark sm:text-display lg:text-display-lg"
         >
-          {t.hero.titleBefore}{" "}
-          <em className="font-playfair italic text-gold">{t.hero.titleHighlight}</em>
+          {t.hero.titleBefore}
+          <br />
+          <em className="font-playfair not-italic text-gold">{t.hero.titleHighlight}</em> &
           <br />
           {t.hero.titleAfter}
         </motion.h1>
@@ -56,7 +69,7 @@ export function Hero() {
         <motion.p
           variants={fadeUp}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="mb-12 max-w-md text-lg font-light leading-8 text-brand-light"
+          className="mb-10 max-w-md font-dm text-lg font-light leading-relaxed text-brand-mid"
         >
           {t.hero.subtitle}
         </motion.p>
@@ -64,43 +77,36 @@ export function Hero() {
         <motion.div
           variants={fadeUp}
           transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-          className="flex flex-col gap-4 sm:flex-row"
+          className="flex flex-col items-start gap-5 sm:flex-row sm:items-center"
         >
           <a
             href="#booking"
-            className="cursor-pointer rounded bg-gold px-8 py-4 text-center text-sm font-medium uppercase tracking-wide text-brand-black transition hover:-translate-y-0.5 hover:bg-gold-light"
+            className="group flex cursor-pointer items-center gap-3 bg-gold px-8 py-4 text-sm font-medium uppercase tracking-widest text-white transition-all duration-300 hover:gap-5 hover:bg-gold-dark"
           >
             {t.hero.bookRide}
+            <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" aria-hidden="true" />
           </a>
           <a
             href="#fleet"
-            className="cursor-pointer rounded border border-gold/40 px-8 py-4 text-center text-sm font-normal uppercase tracking-wide text-gold-light transition hover:border-gold hover:bg-gold/10"
+            className="cursor-pointer border-b border-brand-border pb-1 text-sm font-medium uppercase tracking-widest text-brand-dark transition-colors hover:border-gold hover:text-gold"
           >
             {t.hero.ourFleet}
           </a>
         </motion.div>
       </motion.div>
 
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        transition={{ staggerChildren: 0.1, delayChildren: 0.35 }}
-        className="relative z-10 mt-14 flex flex-wrap gap-5 md:mt-0 md:flex-col md:items-end md:gap-8 md:pl-16"
-      >
-        {stats.map((stat) => (
-          <motion.div
-            key={stat.label}
-            variants={fadeUp}
-            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-            className="min-w-48 rounded-lg border border-gold/20 bg-brand-dark/85 p-6 text-left backdrop-blur md:text-right"
-          >
-            <div className="font-playfair text-4xl font-semibold leading-none text-gold">
-              {stat.value}
+      <div className="relative z-10 border-t border-brand-border bg-white/80 backdrop-blur-sm">
+        <div className="mx-auto grid max-w-5xl grid-cols-3 divide-x divide-brand-border px-4 sm:px-8 lg:px-20">
+          {stats.map((stat) => (
+            <div key={stat.value} className="px-3 py-6 text-center sm:px-8">
+              <div className="font-playfair text-3xl font-semibold text-gold">{stat.value}</div>
+              <div className="mt-1 text-[0.65rem] uppercase tracking-[0.15em] text-brand-muted sm:text-xs">
+                {stat.label}
+              </div>
             </div>
-            <div className="mt-2 text-xs uppercase tracking-widest text-brand-muted">{stat.label}</div>
-          </motion.div>
-        ))}
-      </motion.div>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }

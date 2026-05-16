@@ -18,7 +18,8 @@ export const translations = {
       pickupPlaceholder: "Stockholm, Arlanda...",
       destinationPlaceholder: "Göteborg, Malmö...",
       langSv: "SV",
-      langEn: "EN"
+      langEn: "EN",
+      quoteMark: "\""
     },
     nav: {
       services: "Tjänster",
@@ -28,12 +29,13 @@ export const translations = {
       bookNow: "Boka Nu"
     },
     hero: {
+      eyebrow: "Sveriges Premiumtaxi sedan 2009",
       badge: "Sveriges Premiumtaxi",
       titleBefore: "Res med",
       titleHighlight: "Stil",
-      titleAfter: "Genom Sverige",
+      titleAfter: "Komfort.",
       subtitle:
-        "Lyxiga körningar, punktliga hämtningar och förstklassig komfort - dygnet runt, var som helst i landet.",
+        "Lyxiga körningar och punktliga hämtningar - dygnet runt, var som helst i landet.",
       bookRide: "Boka Resa",
       ourFleet: "Vår Flotta"
     },
@@ -56,6 +58,7 @@ export const translations = {
       titleBefore: "Allt du",
       titleHighlight: "behöver",
       titleAfter: "för din resa",
+      readMore: "Läs mer",
       items: [
         {
           icon: "✈",
@@ -203,7 +206,8 @@ export const translations = {
       pickupPlaceholder: "Stockholm, Arlanda...",
       destinationPlaceholder: "Gothenburg, Malmo...",
       langSv: "SV",
-      langEn: "EN"
+      langEn: "EN",
+      quoteMark: "\""
     },
     nav: {
       services: "Services",
@@ -213,12 +217,13 @@ export const translations = {
       bookNow: "Book Now"
     },
     hero: {
+      eyebrow: "Sweden's Premium Taxi since 2009",
       badge: "Sweden's Premium Taxi",
       titleBefore: "Travel in",
       titleHighlight: "Style",
-      titleAfter: "Across Sweden",
+      titleAfter: "Comfort.",
       subtitle:
-        "Luxury rides, punctual pickups and first-class comfort - around the clock, anywhere in the country.",
+        "Luxury rides and punctual pickups - around the clock, anywhere in the country.",
       bookRide: "Book a Ride",
       ourFleet: "Our Fleet"
     },
@@ -241,6 +246,7 @@ export const translations = {
       titleBefore: "Everything you",
       titleHighlight: "need",
       titleAfter: "for your journey",
+      readMore: "Read more",
       items: [
         {
           icon: "✈",

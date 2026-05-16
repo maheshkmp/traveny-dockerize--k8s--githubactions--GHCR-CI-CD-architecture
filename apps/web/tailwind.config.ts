@@ -5,20 +5,31 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        gold: { DEFAULT: "#C9A84C", light: "#E8C87A", pale: "#F5EDD6" },
+        gold: {
+          DEFAULT: "#C9A84C",
+          light: "#E8C87A",
+          pale: "#FDF6E3",
+          dark: "#A8892E"
+        },
         brand: {
-          black: "#0A0A0B",
-          charcoal: "#141416",
-          dark: "#1C1C1F",
-          mid: "#2E2E33",
-          muted: "#6B6B75",
-          light: "#ADADB8",
-          snow: "#FAFAFA"
+          white: "#FFFFFF",
+          snow: "#FAFAF8",
+          cream: "#F5F0E8",
+          mist: "#EDE8DF",
+          border: "#E2D9CC",
+          muted: "#9A8F82",
+          mid: "#6B6059",
+          dark: "#2C2420",
+          black: "#1A1108"
         }
       },
       fontFamily: {
         playfair: ["var(--font-playfair)"],
         dm: ["var(--font-dm)"]
+      },
+      fontSize: {
+        display: ["5rem", { lineHeight: "0.95", letterSpacing: "-0.02em" }],
+        "display-lg": ["7rem", { lineHeight: "0.9", letterSpacing: "-0.03em" }]
       }
     }
   },

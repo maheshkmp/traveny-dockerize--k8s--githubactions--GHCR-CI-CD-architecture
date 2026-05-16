@@ -9,7 +9,7 @@ export function Fleet() {
   return (
     <section
       id="fleet"
-      className="border-t border-gold/10 bg-brand-charcoal px-5 py-24 font-dm md:px-16 md:py-28"
+      className="bg-brand-cream px-5 py-24 font-dm md:px-16 md:py-28"
     >
       <div className="mx-auto max-w-7xl">
         <Reveal>
@@ -18,12 +18,12 @@ export function Fleet() {
               <span className="mb-4 block text-xs uppercase tracking-[0.18em] text-gold">
                 {t.fleet.tag}
               </span>
-              <h2 className="font-playfair text-4xl font-semibold leading-tight text-brand-snow md:text-5xl">
+              <h2 className="font-playfair text-5xl font-semibold leading-[0.95] tracking-[-0.02em] text-brand-dark md:text-display">
                 {t.fleet.titleBefore}{" "}
                 <em className="italic text-gold">{t.fleet.titleHighlight}</em>
               </h2>
             </div>
-            <p className="max-w-md text-sm font-light leading-7 text-brand-muted md:justify-self-end">
+            <p className="max-w-md text-sm font-light leading-7 text-brand-mid md:justify-self-end">
               {t.fleet.subtitle}
             </p>
           </div>
@@ -32,17 +32,17 @@ export function Fleet() {
         <div className="grid gap-6 md:grid-cols-3">
           {t.fleet.items.map((item, index) => (
             <Reveal key={item.name} delay={index * 0.08}>
-              <article className="overflow-hidden rounded-lg border border-gold/10 bg-brand-dark transition duration-300 hover:-translate-y-1.5 hover:border-gold/35">
-                <div className="flex h-44 items-center justify-center bg-brand-mid text-6xl">
+              <article className="overflow-hidden rounded-lg border border-brand-border bg-white transition duration-300 hover:-translate-y-1.5 hover:border-gold hover:shadow-lg">
+                <div className="flex h-44 items-center justify-center bg-brand-mist text-6xl">
                   {item.emoji}
                 </div>
                 <div className="p-6">
                   <div className="mb-2 text-xs uppercase tracking-widest text-gold">{item.cls}</div>
-                  <h3 className="mb-2 font-playfair text-xl font-semibold text-brand-snow">
+                  <h3 className="mb-2 font-playfair text-xl font-semibold text-brand-dark">
                     {item.name}
                   </h3>
                   <p className="text-sm leading-6 text-brand-muted">{item.spec}</p>
-                  <div className="mt-5 flex items-center justify-between border-t border-gold/10 pt-5">
+                  <div className="mt-5 flex items-center justify-between border-t border-brand-border pt-5">
                     <span className="text-xs uppercase tracking-widest text-brand-muted">
                       {t.fleet.from}
                     </span>

@@ -12,8 +12,8 @@ export function Footer() {
   const { t } = useLang();
 
   return (
-    <footer className="flex flex-col items-center justify-between gap-6 border-t border-gold/20 bg-brand-charcoal px-5 py-10 text-center font-dm md:flex-row md:px-16 md:text-left">
-      <div className="font-playfair text-xl font-bold text-brand-snow">
+    <footer className="flex flex-col items-center justify-between gap-6 border-t border-brand-mid/30 bg-brand-dark px-5 py-10 text-center font-dm md:flex-row md:px-16 md:text-left">
+      <div className="font-playfair text-xl font-bold text-white">
         {t.common.brandStart}
         <span className="text-gold">{t.common.brandEnd}</span>
       </div>
