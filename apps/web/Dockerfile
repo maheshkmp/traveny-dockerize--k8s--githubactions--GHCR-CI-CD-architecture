@@ -3,7 +3,7 @@ FROM oven/bun:1 AS deps
 WORKDIR /app
 
 # Copy workspace manifests first (layer caching)
-COPY package.json bun.lockb ./
+COPY package.json bun.lock ./
 COPY apps/web/package.json ./apps/web/
 COPY packages/core/package.json ./packages/core/
 
