@@ -58,6 +58,7 @@ export const translations = {
       titleBefore: "Allt du",
       titleHighlight: "behöver",
       titleAfter: "för din resa",
+      subtitle: "Specialiserade tjänster designade för varje typ av resenär.",
       readMore: "Läs mer",
       items: [
         {
@@ -246,6 +247,7 @@ export const translations = {
       titleBefore: "Everything you",
       titleHighlight: "need",
       titleAfter: "for your journey",
+      subtitle: "Specialized services designed for every type of traveler.",
       readMore: "Read more",
       items: [
         {

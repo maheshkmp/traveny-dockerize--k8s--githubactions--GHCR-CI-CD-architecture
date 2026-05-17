@@ -57,18 +57,17 @@ export function Services() {
             <div className="flex items-center gap-3 mb-4">
               <div className="w-8 h-px bg-gold" />
               <span className="text-xs tracking-[0.25em]
-                uppercase text-gold">Tjänster</span>
+                uppercase text-gold">{t.services?.tag || "Tjänster"}</span>
             </div>
             <h2 className="font-playfair text-5xl
               text-brand-navy font-bold">
-              Allt du behöver<br />
-              <em className="text-gold">för din resa</em>
+              {t.services?.titleBefore || "Allt du"} <em className="text-gold not-italic">{t.services?.titleHighlight || "behöver"}</em><br />
+              {t.services?.titleAfter || "för din resa"}
             </h2>
           </div>
           <p className="hidden lg:block text-brand-muted
             max-w-xs text-sm leading-relaxed">
-            Specialiserade tjänster designade
-            för varje typ av resenär.
+            {t.services?.subtitle || "Specialiserade tjänster designade för varje typ av resenär."}
           </p>
         </div>
 
@@ -88,7 +87,7 @@ export function Services() {
           </p>
           <div className="mt-8 flex items-center gap-2
             text-gold text-xs tracking-widest uppercase">
-            Läs mer
+            {t.services?.readMore || "Läs mer"}
             <ArrowRight className="w-3 h-3" />
           </div>
         </div>
