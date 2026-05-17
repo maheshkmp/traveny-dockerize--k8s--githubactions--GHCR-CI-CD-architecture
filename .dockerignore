@@ -9,3 +9,5 @@ dist
 coverage
 .turbo
 README.md
+certbot/
+nginx/
