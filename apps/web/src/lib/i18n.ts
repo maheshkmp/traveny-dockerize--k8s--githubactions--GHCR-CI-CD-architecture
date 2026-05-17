@@ -376,7 +376,7 @@ export const translations = {
       privacy: "Privacy Policy",
       terms: "Terms",
       contact: "Contact",
-      copy: "© 2025 Traveny AB · Reg. no. 556xxx-xxxx"
+      copy: "© 2026 Traveny AB · Reg. no. 556xxx-xxxx"
     }
   }
 } as const satisfies Record<Lang, Record<string, unknown>>;
