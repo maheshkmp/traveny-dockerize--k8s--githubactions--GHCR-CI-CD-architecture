@@ -187,7 +187,7 @@ export const translations = {
       privacy: "Integritetspolicy",
       terms: "Villkor",
       contact: "Kontakt",
-      copy: "© 2025 Traveny AB · Org.nr 556xxx-xxxx"
+      copy: "© 2026 Traveny AB · Org.nr 556xxx-xxxx"
     }
   },
   en: {
