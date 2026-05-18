@@ -10,6 +10,7 @@
   },
   "scripts": {
     "dev": "bun run --hot dev.ts",
+    "start": "bun run server.ts",
     "build:types": "bun run builders/build-types.ts",
     "build:vercel": "bun run builders/build-vercel.ts && bun run build:types"
   },

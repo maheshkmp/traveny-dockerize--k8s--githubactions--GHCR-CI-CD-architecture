@@ -19,7 +19,7 @@ const authRoutes = [
   "/verify-email"
 ];
 
-const protectedRoutes = ["/admin", "/dashboard", "/cv-builder", "/cover-letter"];
+const protectedRoutes = ["/admin", "/dashboard"];
 
 export default async function authMiddleware(request: NextRequest) {
   
