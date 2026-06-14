@@ -40,7 +40,7 @@ services:
     depends_on:
       - api
     environment:
-      NEXT_PUBLIC_API_URL: https://api.traveny.com
+      NEXT_PUBLIC_BACKEND_URL: "http://api:4000"
       NODE_ENV: production
     expose:
       - "3000"

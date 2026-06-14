@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  namespace: traveny
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: web
+        image: traveny-web:latest
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 3000
+        env:
+        - name: NEXT_PUBLIC_BACKEND_URL
+          value: "http://api.traveny.local"
+        - name: NODE_ENV
+          value: "production"
+        - name: PORT
+          value: "3000"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-service
+  namespace: traveny
+spec:
+  selector:
+    app: web
+  ports:
+  - protocol: TCP
+    port: 3000
+    targetPort: 3000
