@@ -124,7 +124,7 @@ export function configAuth(config: AuthConfigurations) {
 
     emailAndPassword: {
       enabled: true,
-      requireEmailVerification: true,
+      requireEmailVerification: false, // TEMP: disabled — re-enable for production
       autoSignIn: false,
       // Email verification hook
       sendVerificationEmail: async ({ user, url }: { user: any; url: string }) => {
@@ -179,8 +179,21 @@ export function configAuth(config: AuthConfigurations) {
       user: {
         create: {
           after: async (user: any) => {
-            // Welcome email will be sent after email verification (in update hook)
-            console.log("[Auth] User created:", user.email);
+            // Default role to "user" for all new sign-ups.
+            // Admin-created users will have an explicit role already set by the plugin.
+            if (!user.role) {
+              try {
+                await config.database
+                  .update(users)
+                  .set({ role: "user" })
+                  .where(eq(users.id, user.id));
+                console.log("[Auth] Default role 'user' set for:", user.email);
+              } catch (err) {
+                console.error("[Auth] Failed to set default role:", err);
+              }
+            } else {
+              console.log("[Auth] User created:", user.email, "role:", user.role);
+            }
           },
         },
         update: {

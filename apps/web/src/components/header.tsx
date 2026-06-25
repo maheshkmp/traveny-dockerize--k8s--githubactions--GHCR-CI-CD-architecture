@@ -79,8 +79,8 @@ export function Header() {
                         <div className="flex items-center gap-2">
                             {/* Admin badge */}
                             {(session.user as SessionUserWithRole).role === "admin" && (
-                                <Button asChild variant="outline" size="sm" className="gap-2 border-violet-200 text-violet-700 hover:bg-violet-50 dark:hover:bg-violet-950/30 hidden sm:inline-flex">
-                                    <Link href="/admin">
+                                <Button asChild variant="outline" size="sm" className="gap-2 border-gold/40 text-gold-dark hover:bg-gold/10 hidden sm:inline-flex">
+                                    <Link href="/admin/users">
                                         <ShieldCheck className="size-4" />
                                         Admin
                                     </Link>
@@ -149,13 +149,13 @@ export function Header() {
                         </div>
                     ) : (
                         <div className="flex items-center gap-2">
-                            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground">
+                            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-brand-muted hover:text-brand-body">
                                 <Link href="/signin">Sign In</Link>
                             </Button>
                             <Button
                                 asChild
                                 size="sm"
-                                className="bg-gradient-to-r from-violet-600 to-fuchsia-600 hover:from-violet-700 hover:to-fuchsia-700 text-white border-0 shadow-md shadow-violet-500/20 hover:shadow-violet-500/30 transition-all duration-300"
+                                className="bg-gradient-to-r from-gold to-gold-dark hover:from-gold-dark hover:to-gold text-brand-navy font-semibold border-0 shadow-md shadow-gold/20 hover:shadow-gold/30 transition-all duration-300"
                             >
                                 <Link href="/signin">Get Started</Link>
                             </Button>

@@ -71,31 +71,29 @@ export default async function authMiddleware(request: NextRequest) {
       console.error("[Middleware] Session fetch error:", error);
     }
 
-    // Check if user is authenticated but email is not verified
-    // Redirect to verify-email unless they are already there or signing out
-    if (session && session.user.emailVerified === false) {
-      if (pathname !== "/verify-email" && !pathname.startsWith("/api/auth/sign-out")) {
-        const verifyUrl = new URL("/verify-email", request.url);
-        if (session.user.email) {
-          verifyUrl.searchParams.set("email", session.user.email);
-        }
-        return NextResponse.redirect(verifyUrl);
-      }
-      // If already on verify-email page, allow through
-      return NextResponse.next({ headers: requestHeaders });
-    }
+    // TEMP: Email verification check disabled — re-enable for production
+    // if (session && session.user.emailVerified === false) {
+    //   if (pathname !== "/verify-email" && !pathname.startsWith("/api/auth/sign-out")) {
+    //     const verifyUrl = new URL("/verify-email", request.url);
+    //     if (session.user.email) {
+    //       verifyUrl.searchParams.set("email", session.user.email);
+    //     }
+    //     return NextResponse.redirect(verifyUrl);
+    //   }
+    //   // If already on verify-email page, allow through
+    //   return NextResponse.next({ headers: requestHeaders });
+    // }
 
     // If Auth route and Already authenticated,
-    // Redirect back to appropiate path
+    // Redirect back to appropriate path
     if (authRoutes.includes(pathname) && session) {
 
       if (session.user.role === "admin") {
-        return NextResponse.redirect(new URL("/admin", request.url));
+        return NextResponse.redirect(new URL("/admin/users", request.url));
       }
 
-      if (session.user.role === "user") {
-        return NextResponse.redirect(new URL("/account", request.url));
-      }
+      // agents and regular users both go to dashboard
+      return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
     // If protected route and Not authenticated,

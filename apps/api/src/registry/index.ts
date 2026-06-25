@@ -3,10 +3,12 @@ import { OpenAPI } from "@/types";
 import { BASE_PATH } from "@/lib/constants";
 
 import index from "../routes/index.route";
+import users from "../routes/users.route";
 
 export function registerRoutes(app: OpenAPI) {
   const registeredApp = app
-    .route("/", index);
+    .route("/", index)
+    .route("/", users);
 
   return registeredApp;
 }
