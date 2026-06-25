@@ -42,13 +42,15 @@ export function configAuth(config: AuthConfigurations) {
   }
 
   const authConfig = {
-    baseURL: process.env.BETTER_AUTH_URL,
+    // Support both BETTER_AUTH_BASE_URL (docker-compose) and BETTER_AUTH_URL (legacy)
+    baseURL: process.env.BETTER_AUTH_BASE_URL || process.env.BETTER_AUTH_URL,
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:4000",
-      // Custom production domains
-      "https://example.com",
-      "https://api.example.com",
+      // Production domains
+      "https://traveny.com",
+      "https://www.traveny.com",
+      "https://api.traveny.com",
       // Vercel deployment URLs (stable)
       ...dynamicOrigins
     ].filter((v, i, arr) => typeof v === "string" && arr.indexOf(v) === i) as string[],
