@@ -13,6 +13,10 @@ RUN bun install
 FROM oven/bun:1 AS builder
 WORKDIR /app
 
+# Set NODE_ENV here so Bun bakes it into the compiled bundle.
+# Bun substitutes process.env.* at BUILD TIME, so runtime env vars won't override it.
+ENV NODE_ENV=production
+
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
