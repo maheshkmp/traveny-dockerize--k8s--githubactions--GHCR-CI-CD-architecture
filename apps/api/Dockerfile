@@ -37,14 +37,8 @@ ENV PORT=4000
 
 COPY --from=builder /app/dist/server.js ./server.js
 
-# pg and its transitive deps
-COPY --from=builder /app/node_modules/pg ./node_modules/pg
-COPY --from=builder /app/node_modules/pg-types ./node_modules/pg-types
-COPY --from=builder /app/node_modules/pg-protocol ./node_modules/pg-protocol
-COPY --from=builder /app/node_modules/pg-connection-string ./node_modules/pg-connection-string
-COPY --from=builder /app/node_modules/pgpass ./node_modules/pgpass
-COPY --from=builder /app/node_modules/@neondatabase ./node_modules/@neondatabase
-COPY --from=builder /app/node_modules/ws ./node_modules/ws
+# Install external dependencies so all transitive deps (like pg-types, postgres-bytea) are included correctly
+RUN bun add pg @neondatabase/serverless ws
 
 EXPOSE 4000
 CMD ["bun", "server.js"]
