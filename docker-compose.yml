@@ -26,6 +26,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@db:5432/${POSTGRES_DB}
       BETTER_AUTH_SECRET: ${BETTER_AUTH_SECRET}
       BETTER_AUTH_BASE_URL: https://api.traveny.com
+      FRONTEND_URL: https://traveny.com
       NODE_ENV: production
       PORT: "4000"
       RESEND_API_KEY: ${RESEND_API_KEY}
@@ -36,10 +37,15 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      args:
+        - NEXT_PUBLIC_BETTER_AUTH_URL=https://api.traveny.com/api/auth
+        - NEXT_PUBLIC_API_URL=https://api.traveny.com
     restart: unless-stopped
     depends_on:
       - api
     environment:
+      NEXT_PUBLIC_BETTER_AUTH_URL: "https://api.traveny.com/api/auth"
+      NEXT_PUBLIC_API_URL: "https://api.traveny.com"
       NEXT_PUBLIC_BACKEND_URL: "http://api:4000"
       NODE_ENV: production
     expose:

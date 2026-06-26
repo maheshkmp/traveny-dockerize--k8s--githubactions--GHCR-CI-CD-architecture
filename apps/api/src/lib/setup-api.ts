@@ -35,22 +35,17 @@ export function setupAPI(): OpenAPIHono<APIBindings> {
           "http://localhost:4000",
           process.env.FRONTEND_URL,
           process.env.CLIENT_URL
-        ].filter(Boolean);
-        
-        // Allow requests with no origin (like mobile apps or curl requests)
-        if (!origin) return process.env.FRONTEND_URL || process.env.CLIENT_URL || "*";
-        
-        // Check if origin is in allowed list
-        if (allowedOrigins.includes(origin)) {
-          return origin;
-        }
-        
-        // Allow any vercel.app domain in development
+        ].filter(Boolean) as string[];
+
+        if (!origin) return process.env.FRONTEND_URL || "https://traveny.com";
+
+        if (allowedOrigins.includes(origin)) return origin;
+
         if (origin.endsWith('.vercel.app') && process.env.NODE_ENV !== 'production') {
           return origin;
         }
-        
-        return process.env.FRONTEND_URL || process.env.CLIENT_URL || "*";
+
+        return process.env.FRONTEND_URL || "https://traveny.com";
       },
       allowHeaders: ["Content-Type", "Authorization", "Cookie", "X-Requested-With"],
       allowMethods: ["POST", "GET", "PUT", "DELETE", "PATCH", "OPTIONS"],
