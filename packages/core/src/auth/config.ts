@@ -128,7 +128,7 @@ export function configAuth(config: AuthConfigurations) {
       enabled: true,
       minPasswordLength: 6,
       requireEmailVerification: false, // TEMP: disabled — re-enable for production
-      autoSignIn: false,
+      autoSignIn: true,
       // Email verification hook
       sendVerificationEmail: async ({ user, url }: { user: any; url: string }) => {
         try {
