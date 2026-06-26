@@ -126,6 +126,7 @@ export function configAuth(config: AuthConfigurations) {
 
     emailAndPassword: {
       enabled: true,
+      minPasswordLength: 6,
       requireEmailVerification: false, // TEMP: disabled — re-enable for production
       autoSignIn: false,
       // Email verification hook
