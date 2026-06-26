@@ -24,13 +24,7 @@ jobs:
           command_timeout: 45m
           script: |
             cd ~/projects/traveny
-            git fetch origin main
-            git reset --hard origin/main
-            sudo chown -R deploy:deploy certbot/
-            docker compose build --no-cache web
-            docker compose up -d --remove-orphans
-            docker image prune -f
-            git log --oneline -1
+            ./deploy.sh
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.3
         with:
