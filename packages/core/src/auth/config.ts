@@ -245,7 +245,7 @@ export function configAuth(config: AuthConfigurations) {
       // Cross-subdomain cookies: only set when COOKIE_DOMAIN env var is explicitly configured.
       // - Local dev: not set (proxy handles same-origin cookies).
       // - Vercel *.vercel.app: NOT set — web and API are on different vercel.app subdomains;
-      //   the Next.js proxy at /api/[[...path]] strips the Domain attribute so cookies work.
+      //   the Next.js proxy  at /api/[[...path]] strips the Domain attribute so cookies work.
       // - Custom domain (e.g., ghostcod.com + api.ghostcod.com):
       //   set COOKIE_DOMAIN=.ghostcod.com in the API's Vercel environment variables.
       crossSubDomainCookies: isProduction && process.env.COOKIE_DOMAIN
