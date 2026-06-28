@@ -1,4 +1,4 @@
-CREATE TABLE "accounts" (
+CREATE TABLE IF NOT EXISTS "accounts" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
 	"provider_id" text NOT NULL,
