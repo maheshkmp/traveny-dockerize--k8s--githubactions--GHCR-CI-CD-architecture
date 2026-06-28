@@ -141,7 +141,7 @@ export function configAuth(config: AuthConfigurations) {
             to: user.email,
             subject: "Verify your email address",
             html,
-            from: process.env.EMAIL_FROM_NOREPLY || "noreply@example.com",
+            from: process.env.EMAIL_FROM_NOREPLY || "noreply@traveny.com",
           });
         } catch (error) {
           console.error("[Auth] Failed to send verification email:", error);
@@ -159,7 +159,7 @@ export function configAuth(config: AuthConfigurations) {
             to: user.email,
             subject: "Reset your password",
             html,
-            from: process.env.EMAIL_FROM_NOREPLY || "noreply@example.com",
+            from: process.env.EMAIL_FROM_NOREPLY || "noreply@traveny.com",
           });
         } catch (error) {
           console.error("[Auth] Failed to send password reset email:", error);
