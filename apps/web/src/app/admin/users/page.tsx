@@ -14,6 +14,7 @@ import {
   CheckCircle2,
   AlertTriangle,
   X,
+  Info,
 } from "lucide-react";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -31,6 +32,14 @@ interface UserRow {
   banReason: string | null;
   createdAt: string;
   updatedAt: string;
+  plan?: "basic" | "pro" | "premium" | null;
+  subscriptionId?: string | null;
+  subscriptionStatus?: "active" | "cancelled" | "expired" | null;
+  subscriptionCurrentPeriodEnd?: string | null;
+  subscriptionActivatedAt?: string | null;
+  creditsRemaining?: number | null;
+  creditsUsed?: number | null;
+  creditsResetAt?: string | null;
 }
 
 interface UsersResponse {
@@ -187,6 +196,7 @@ export default function AdminUsersPage() {
   } | null>(null);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [toast, setToast] = useState<{ msg: string; ok: boolean } | null>(null);
+  const [viewingUser, setViewingUser] = useState<UserRow | null>(null);
 
   const LIMIT = 10;
 
@@ -415,8 +425,8 @@ export default function AdminUsersPage() {
       {/* Table */}
       <div className="rounded-2xl border border-white/10 overflow-hidden bg-[#181C27]">
         {/* Table header */}
-        <div className="grid grid-cols-[2fr_2fr_1fr_1fr_1fr_auto] gap-4 px-5 py-3 border-b border-white/10 bg-white/5">
-          {["User", "Email", "Role", "Status", "Joined", "Actions"].map(
+        <div className="grid grid-cols-[2fr_1.5fr_1fr_1.2fr_1.2fr_1fr_1fr_auto] gap-4 px-5 py-3 border-b border-white/10 bg-white/5">
+          {["User", "Email", "Role", "Plan & Sub", "Credits", "Status", "Joined", "Actions"].map(
             (col) => (
               <span
                 key={col}
@@ -452,7 +462,7 @@ export default function AdminUsersPage() {
               return (
                 <div
                   key={user.id}
-                  className={`grid grid-cols-[2fr_2fr_1fr_1fr_1fr_auto] gap-4 items-center px-5 py-4 hover:bg-white/[0.03] transition-colors ${
+                  className={`grid grid-cols-[2fr_1.5fr_1fr_1.2fr_1.2fr_1fr_1fr_auto] gap-4 items-center px-5 py-4 hover:bg-white/[0.03] transition-colors ${
                     isBusy ? "opacity-60 pointer-events-none" : ""
                   }`}
                 >
@@ -489,6 +499,50 @@ export default function AdminUsersPage() {
                     </div>
                   </div>
 
+                  {/* Plan & Sub */}
+                  <div>
+                    {user.plan === "premium" ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-purple-500/15 text-purple-300 border border-purple-500/30">
+                        Premium
+                      </span>
+                    ) : user.plan === "pro" ? (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-500/15 text-amber-300 border border-amber-500/30">
+                        Pro
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-slate-500/15 text-slate-300 border border-slate-500/30">
+                        Basic
+                      </span>
+                    )}
+
+                    {user.subscriptionStatus && (
+                      <div className="mt-1 flex items-center gap-1">
+                        {user.subscriptionStatus === "active" ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-emerald-400">
+                            <span className="size-1 rounded-full bg-emerald-400" />
+                            Active
+                          </span>
+                        ) : user.subscriptionStatus === "cancelled" ? (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-amber-400">
+                            <span className="size-1 rounded-full bg-amber-400" />
+                            Cancelled
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-red-400">
+                            <span className="size-1 rounded-full bg-red-400" />
+                            Expired
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Credits */}
+                  <div className="flex flex-col gap-0.5">
+                    <span className="text-xs font-medium text-white">{user.creditsRemaining ?? 0} Left</span>
+                    <span className="text-[10px] text-white/40">{user.creditsUsed ?? 0} Used</span>
+                  </div>
+
                   {/* Status */}
                   <div className="flex flex-col gap-1">
                     {user.emailVerified ? (
@@ -521,6 +575,13 @@ export default function AdminUsersPage() {
 
                   {/* Actions */}
                   <div className="flex items-center gap-1">
+                    <button
+                      onClick={() => setViewingUser(user)}
+                      title="View user details"
+                      className="size-8 flex items-center justify-center rounded-lg text-sky-400 hover:bg-sky-500/10 transition-colors"
+                    >
+                      <Info className="size-4" />
+                    </button>
                     {user.banned ? (
                       <button
                         onClick={() =>
@@ -584,6 +645,238 @@ export default function AdminUsersPage() {
             </div>
           </div>
         )}
+      </div>
+
+      {/* User Details Modal */}
+      {viewingUser && (
+        <UserDetailsModal
+          user={viewingUser}
+          onClose={() => setViewingUser(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+// ── User Details Modal ───────────────────────────────────────────────────────
+
+function formatDate(dateStr?: string | null) {
+  if (!dateStr) return "N/A";
+  try {
+    return new Date(dateStr).toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  } catch {
+    return dateStr;
+  }
+}
+
+function UserDetailsModal({
+  user,
+  onClose,
+}: {
+  user: UserRow;
+  onClose: () => void;
+}) {
+  const [copiedId, setCopiedId] = useState<string | null>(null);
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedId(text);
+    setTimeout(() => setCopiedId(null), 2000);
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="w-full max-w-2xl rounded-2xl border border-white/10 bg-[#181C27] shadow-2xl overflow-hidden animate-in zoom-in-95 duration-200">
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-white/5">
+          <div className="flex items-center gap-3">
+            <div className="size-10 rounded-xl bg-gold/15 flex items-center justify-center">
+              <User className="size-5 text-gold" />
+            </div>
+            <div>
+              <h3 className="text-lg font-bold text-white">User Details</h3>
+              <p className="text-xs text-white/40">Raw metadata and subscription diagnostics</p>
+            </div>
+          </div>
+          <button
+            onClick={onClose}
+            className="p-1.5 rounded-lg text-white/40 hover:text-white hover:bg-white/5 transition-colors"
+          >
+            <X className="size-5" />
+          </button>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-6 max-h-[70vh] overflow-y-auto">
+          {/* Section 1: Basic Info */}
+          <div>
+            <h4 className="text-xs font-bold text-gold uppercase tracking-wider mb-3">Basic Information</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white/[0.02] border border-white/5 rounded-xl p-4">
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">User ID</span>
+                <div className="flex items-center gap-1.5 mt-1">
+                  <code className="text-xs text-white/80 bg-white/5 px-2 py-0.5 rounded font-mono truncate max-w-[200px]">
+                    {user.id}
+                  </code>
+                  <button
+                    onClick={() => copyToClipboard(user.id)}
+                    className="text-white/40 hover:text-white transition-colors"
+                    title="Copy ID"
+                  >
+                    {copiedId === user.id ? (
+                      <CheckCircle2 className="size-3.5 text-emerald-400" />
+                    ) : (
+                      <svg className="size-3.5 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2" />
+                      </svg>
+                    )}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Full Name</span>
+                <span className="text-sm font-medium text-white block mt-1">{user.name}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Email Address</span>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className="text-sm font-medium text-white truncate max-w-[200px]">{user.email}</span>
+                  {user.emailVerified ? (
+                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-emerald-500/10 text-emerald-400">
+                      Verified
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full text-[9px] font-bold bg-yellow-500/10 text-yellow-400">
+                      Unverified
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Role</span>
+                <div className="mt-1">
+                  <RoleBadge role={user.role} />
+                </div>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Created At</span>
+                <span className="text-xs text-white/60 block mt-1">{formatDate(user.createdAt)}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Last Updated At</span>
+                <span className="text-xs text-white/60 block mt-1">{formatDate(user.updatedAt)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 2: Subscription Info */}
+          <div>
+            <h4 className="text-xs font-bold text-gold uppercase tracking-wider mb-3">Subscription Details</h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-white/[0.02] border border-white/5 rounded-xl p-4">
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Active Plan</span>
+                <div className="mt-1">
+                  {user.plan === "premium" ? (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-purple-500/10 text-purple-300 border border-purple-500/20">
+                      Premium Plan
+                    </span>
+                  ) : user.plan === "pro" ? (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/20">
+                      Pro Plan
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-slate-500/10 text-slate-300 border border-slate-500/20">
+                      Basic Plan
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Subscription Status</span>
+                <div className="mt-1">
+                  {user.subscriptionStatus === "active" ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-400">
+                      <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Active
+                    </span>
+                  ) : user.subscriptionStatus === "cancelled" ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-amber-400">
+                      <span className="size-1.5 rounded-full bg-amber-400" />
+                      Cancelled
+                    </span>
+                  ) : user.subscriptionStatus === "expired" ? (
+                    <span className="inline-flex items-center gap-1 text-xs font-semibold text-red-400">
+                      <span className="size-1.5 rounded-full bg-red-400" />
+                      Expired
+                    </span>
+                  ) : (
+                    <span className="text-xs text-white/30 font-medium">None</span>
+                  )}
+                </div>
+              </div>
+              <div className="md:col-span-2">
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Subscription ID</span>
+                <span className="text-xs font-mono text-white/80 block mt-1 truncate">
+                  {user.subscriptionId ?? "N/A"}
+                </span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Activated At</span>
+                <span className="text-xs text-white/60 block mt-1">{formatDate(user.subscriptionActivatedAt)}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Current Period End</span>
+                <span className="text-xs text-white/60 block mt-1">{formatDate(user.subscriptionCurrentPeriodEnd)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 3: Credit Info */}
+          <div>
+            <h4 className="text-xs font-bold text-gold uppercase tracking-wider mb-3">Credit Ledger</h4>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 bg-white/[0.02] border border-white/5 rounded-xl p-4">
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Credits Remaining</span>
+                <span className="text-lg font-bold text-emerald-400 block mt-1">{user.creditsRemaining ?? 0}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Credits Used</span>
+                <span className="text-lg font-bold text-white/60 block mt-1">{user.creditsUsed ?? 0}</span>
+              </div>
+              <div>
+                <span className="block text-[10px] text-white/30 uppercase tracking-wider font-semibold">Credits Reset At</span>
+                <span className="text-xs text-white/60 block mt-1">{formatDate(user.creditsResetAt)}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Section 4: Security Status */}
+          {user.banned && (
+            <div className="border border-red-500/20 bg-red-500/5 rounded-xl p-4">
+              <h4 className="text-xs font-bold text-red-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                <Ban className="size-3.5" /> Security Infractions
+              </h4>
+              <p className="text-sm text-red-300/80 font-medium">
+                Reason: <span className="text-white font-normal">{user.banReason ?? "Banned by admin"}</span>
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Footer */}
+        <div className="flex justify-end gap-3 px-6 py-4 border-t border-white/10 bg-white/5">
+          <button
+            onClick={onClose}
+            className="px-4 py-2 rounded-lg text-sm font-semibold bg-white/5 border border-white/10 text-white/80 hover:bg-white/10 hover:text-white transition-all"
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

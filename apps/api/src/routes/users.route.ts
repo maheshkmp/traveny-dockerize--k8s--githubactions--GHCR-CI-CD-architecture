@@ -23,6 +23,14 @@ const UserSchema = z.object({
   banReason: z.string().nullable(),
   createdAt: z.string().or(z.date()),
   updatedAt: z.string().or(z.date()),
+  plan: z.enum(["basic", "pro", "premium"]).nullable().optional(),
+  subscriptionId: z.string().nullable().optional(),
+  subscriptionStatus: z.enum(["active", "cancelled", "expired"]).nullable().optional(),
+  subscriptionCurrentPeriodEnd: z.string().or(z.date()).nullable().optional(),
+  subscriptionActivatedAt: z.string().or(z.date()).nullable().optional(),
+  creditsRemaining: z.number().nullable().optional(),
+  creditsUsed: z.number().nullable().optional(),
+  creditsResetAt: z.string().or(z.date()).nullable().optional(),
 });
 
 const UpdateUserSchema = z.object({
@@ -39,7 +47,7 @@ const UsersListSchema = z.object({
   limit: z.number(),
 });
 
-const protectedMiddleware = [authMiddleware, adminMiddleware] as const;
+const protectedMiddleware = [authMiddleware, adminMiddleware];
 
 // ── Routes ───────────────────────────────────────────────────────────────────
 
@@ -110,6 +118,7 @@ const deleteUserRoute = createRoute({
   responses: {
     [HttpStatusCodes.OK]: jsonContent(z.object({ message: z.string() }), "User deleted"),
     [HttpStatusCodes.NOT_FOUND]: jsonContent(notFoundSchema, "User not found"),
+    [HttpStatusCodes.BAD_REQUEST]: jsonContent(z.object({ message: z.string() }), "Cannot delete self or validation error"),
     [HttpStatusCodes.UNAUTHORIZED]: jsonContent(z.object({ message: z.string() }), "Not authenticated"),
     [HttpStatusCodes.FORBIDDEN]: jsonContent(z.object({ message: z.string() }), "Admin access required"),
   },
@@ -138,6 +147,14 @@ const router = createAPIRouter()
           banReason: users.banReason,
           createdAt: users.createdAt,
           updatedAt: users.updatedAt,
+          plan: users.plan,
+          subscriptionId: users.subscriptionId,
+          subscriptionStatus: users.subscriptionStatus,
+          subscriptionCurrentPeriodEnd: users.subscriptionCurrentPeriodEnd,
+          subscriptionActivatedAt: users.subscriptionActivatedAt,
+          creditsRemaining: users.creditsRemaining,
+          creditsUsed: users.creditsUsed,
+          creditsResetAt: users.creditsResetAt,
         })
         .from(users)
         .orderBy(desc(users.createdAt))
