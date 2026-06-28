@@ -97,14 +97,14 @@ export function configAuth(config: AuthConfigurations) {
               subject = "Your verification code";
               html = emailVerificationOTPTemplate({ name: userName, otp } as { name: string; otp: string });
             } else if (type === "forget-password") {
-              subject = "Your GhostCod password reset code";
+              subject = "Your Traveny password reset code";
               html = forgotPasswordOTPTemplate({ name: userName, otp } as { name: string; otp: string });
             } else if (type === "sign-in") {
-              subject = "Your GhostCod sign-in code";
+              subject = "Your Traveny sign-in code";
               html = signInOTPTemplate({ name: userName, otp } as { name: string; otp: string });
             } else {
               // Fallback for any other type
-              subject = "Your GhostCod verification code";
+              subject = "Your Traveny verification code";
               html = emailVerificationOTPTemplate({ name: userName, otp } as { name: string; otp: string });
             }
 
@@ -112,7 +112,7 @@ export function configAuth(config: AuthConfigurations) {
               to: email,
               subject,
               html,
-              from: process.env.EMAIL_FROM_NOREPLY || "noreply@ghostcod.com",
+              from: process.env.EMAIL_FROM_NOREPLY || "noreply@traveny.com",
             });
 
             console.log(`[emailOTP] Sent ${type} OTP to ${email}`);
@@ -212,9 +212,9 @@ export function configAuth(config: AuthConfigurations) {
                 const html = welcomeTemplate({ name: userName });
                 await sendEmail({
                   to: user.email,
-                  subject: "Welcome to GhostCod 🎉",
+                  subject: "Welcome to Traveny 🎉",
                   html,
-                  from: process.env.EMAIL_FROM_HELLO || "hello@ghostcod.com",
+                  from: process.env.EMAIL_FROM_HELLO || "hello@traveny.com",
                 });
                 
                 console.log("[Auth] Welcome email sent to:", user.email);
@@ -246,8 +246,8 @@ export function configAuth(config: AuthConfigurations) {
       // - Local dev: not set (proxy handles same-origin cookies).
       // - Vercel *.vercel.app: NOT set — web and API are on different vercel.app subdomains;
       //   the Next.js proxy  at /api/[[...path]] strips the Domain attribute so cookies work.
-      // - Custom domain (e.g., ghostcod.com + api.ghostcod.com):
-      //   set COOKIE_DOMAIN=.ghostcod.com in the API's Vercel environment variables.
+      // - Custom domain (e.g., traveny.com + api.traveny.com):
+      //   set COOKIE_DOMAIN=.traveny.com in the API's Vercel environment variables.
       crossSubDomainCookies: isProduction && process.env.COOKIE_DOMAIN
         ? {
             enabled: true,
