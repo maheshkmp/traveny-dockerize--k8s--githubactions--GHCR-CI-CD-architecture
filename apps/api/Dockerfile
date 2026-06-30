@@ -1,23 +1,18 @@
-# ── Stage 1: deps ──────────────────────────────────────────
-FROM oven/bun:1 AS deps
+# ── Stage 1: builder ───────────────────────────────────────
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
-COPY package.json bun.lock ./
+COPY package.json bun.lock* ./
 COPY apps/web/package.json ./apps/web/
 COPY apps/api/package.json ./apps/api/
 COPY packages/core/package.json ./packages/core/
 
-RUN bun install
-
-# ── Stage 2: builder ───────────────────────────────────────
-FROM oven/bun:1 AS builder
-WORKDIR /app
+RUN bun install --frozen-lockfile --backend=copyfile --network-concurrency=8
 
 # Set NODE_ENV here so Bun bakes it into the compiled bundle.
 # Bun substitutes process.env.* at BUILD TIME, so runtime env vars won't override it.
 ENV NODE_ENV=production
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
 # Build core first

@@ -1,15 +1,12 @@
-FROM oven/bun:1 AS deps
+FROM oven/bun:1 AS builder
 WORKDIR /app
 
-COPY package.json bun.lock ./
+COPY package.json bun.lock* ./
 COPY apps/web/package.json ./apps/web/
 COPY apps/api/package.json ./apps/api/
 COPY packages/core/package.json ./packages/core/
 
-RUN bun install
-
-FROM oven/bun:1 AS builder
-WORKDIR /app
+RUN bun install --frozen-lockfile --backend=copyfile --network-concurrency=8
 
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV NODE_ENV=production
@@ -19,9 +16,9 @@ ARG NEXT_PUBLIC_API_URL
 ENV NEXT_PUBLIC_BETTER_AUTH_URL=$NEXT_PUBLIC_BETTER_AUTH_URL
 ENV NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL
 
-COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+RUN rm -rf apps/web/.next
 RUN cd packages/core && bun run build
 RUN cd apps/web && bun --bun next build
 
