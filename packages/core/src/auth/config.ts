@@ -26,9 +26,17 @@ export interface AuthConfigurations {
 export function configAuth(config: AuthConfigurations) {
   // isProduction is true on any Vercel deployment (preview or production) and in NODE_ENV=production.
   // Both Vercel environments are HTTPS and require secure/sameSite=none cookies.
-  const isProduction =
+  const isLocal =
+    process.env.BETTER_AUTH_BASE_URL?.includes(".local") ||
+    process.env.BETTER_AUTH_URL?.includes(".local") ||
+    process.env.BETTER_AUTH_BASE_URL?.includes("localhost") ||
+    process.env.BETTER_AUTH_URL?.includes("localhost") ||
+    process.env.NODE_ENV !== "production";
+
+  const isProduction = !isLocal && (
     !!process.env.VERCEL_ENV ||
-    process.env.NODE_ENV === "production";
+    process.env.NODE_ENV === "production"
+  );
 
   // Build dynamic trusted origins from env vars so Vercel preview URLs are always trusted.
   const dynamicOrigins: string[] = [];
@@ -47,6 +55,11 @@ export function configAuth(config: AuthConfigurations) {
     trustedOrigins: [
       "http://localhost:3000",
       "http://localhost:4000",
+      // Local Minikube domains
+      "http://traveny.local",
+      "http://api.traveny.local",
+      "https://traveny.local",
+      "https://api.traveny.local",
       // Production domains
       "https://traveny.com",
       "https://www.traveny.com",

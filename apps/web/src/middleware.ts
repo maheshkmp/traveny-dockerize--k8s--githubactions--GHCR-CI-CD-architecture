@@ -49,8 +49,9 @@ export default async function authMiddleware(request: NextRequest) {
     // Use the backend URL directly for server-to-server session fetch.
     // Do NOT use NEXT_PUBLIC_BETTER_AUTH_URL here — that points to :3000 (this app)
     // which would create an infinite loopback. The backend URL is always internal.
-    const baseURL = process.env.NEXT_PUBLIC_BACKEND_URL
-      ? `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/auth`
+    const resolvedBackendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL;
+    const baseURL = resolvedBackendUrl
+      ? `${resolvedBackendUrl}/api/auth`
       : "http://localhost:4000/api/auth";
 
     // Fetch session

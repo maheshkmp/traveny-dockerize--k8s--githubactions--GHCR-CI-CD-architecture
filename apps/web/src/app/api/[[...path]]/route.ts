@@ -44,7 +44,7 @@ const HOP_BY_HOP_HEADERS = new Set([
 ]);
 
 async function proxyToBackend(request: NextRequest) {
-  const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
+  const backendUrl = process.env.BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:4000";
   
   // Get the path - request.nextUrl.pathname already includes /api/
   const path = request.nextUrl.pathname;

@@ -13,10 +13,12 @@ spec:
       labels:
         app: api
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: api
-        image: traveny-api:latest
-        imagePullPolicy: IfNotPresent
+        image: ghcr.io/maheshkmp/traveny/api:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 4000
         env:

@@ -13,13 +13,17 @@ spec:
       labels:
         app: web
     spec:
+      imagePullSecrets:
+      - name: regcred
       containers:
       - name: web
-        image: traveny-web:latest
-        imagePullPolicy: Never
+        image: ghcr.io/maheshkmp/traveny/web:latest
+        imagePullPolicy: Always
         ports:
         - containerPort: 3000
         env:
+        - name: BACKEND_URL
+          value: "http://api.traveny.local"
         - name: NEXT_PUBLIC_BACKEND_URL
           value: "http://api.traveny.local"
         - name: NODE_ENV
