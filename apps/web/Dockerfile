@@ -22,7 +22,7 @@ RUN rm -rf apps/web/.next
 RUN cd packages/core && bun run build
 RUN cd apps/web && bun --bun next build
 
-FROM oven/bun:1-slim AS runner
+FROM node-20-alpine AS runner
 WORKDIR /app
 
 ENV NODE_ENV=production
@@ -35,4 +35,4 @@ COPY --from=builder /app/apps/web/.next/static ./apps/web/.next/static
 COPY --from=builder /app/apps/web/public ./apps/web/public
 
 EXPOSE 3000
-CMD ["bun", "apps/web/server.js"]
+CMD ["node", "apps/web/server.js"]
