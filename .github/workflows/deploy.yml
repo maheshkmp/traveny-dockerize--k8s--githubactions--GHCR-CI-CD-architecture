@@ -76,6 +76,7 @@ jobs:
           port: ${{ secrets.VPS_PORT }}
           command_timeout: 15m
           script: |
+            export GHCR_TOKEN="${{ secrets.GHCR_TOKEN }}"
             cd ~/projects/traveny
             ./deploy.sh ${{ github.sha }}
 
