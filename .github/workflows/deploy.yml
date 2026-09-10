@@ -100,7 +100,7 @@ jobs:
             echo "⏳ Running Database Migration Job..."
             kubectl delete job traveny-db-migrate -n traveny --ignore-not-found
             kubectl apply -f k8s/migration-job.yaml
-            kubectl wait --for=condition=complete job/traveny-db-migrate -n traveny --timeout=180s
+            kubectl wait --for=condition=complete job/traveny-db-migrate -n traveny --timeout=300s
 
             # 4. Rolling Update API & Web Deployments with new image tag
             echo "🔄 Updating deployments to image tag: ${{ github.sha }}"
