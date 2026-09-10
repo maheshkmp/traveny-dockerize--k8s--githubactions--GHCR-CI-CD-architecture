@@ -50,3 +50,6 @@ echo "📌 Deployed tag: ${IMAGE_TAG}"
 echo "📌 Latest commit:"
 git log --oneline -1
 echo "✅ Done at $(date)"
+
+# Usage: ./deploy.sh [IMAGE_TAG]
+# IMAGE_TAG defaults to "latest" if not provided.

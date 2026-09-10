@@ -314,3 +314,120 @@ export IMAGE_TAG=<previous-commit-sha>
 docker compose pull api web
 docker compose up -d api web
 ```
+
+---
+
+## ☸️ Local Kubernetes Architecture (Minikube)
+
+In addition to Docker Compose, Traveny includes declarative Kubernetes manifests in `k8s/` for running production-like orchestration locally using **Minikube** or **Kind**.
+
+```
+k8s/
+├── namespace.yaml  # Namespace definition (`traveny`)
+├── secrets.yaml    # DB credentials & application secret keys
+├── db.yaml         # PostgreSQL Deployment & Service
+├── api.yaml        # Hono Backend Deployment & Service
+├── web.yaml        # Next.js Web Deployment & Service
+├── ingress.yaml    # Nginx Ingress routes (traveny.local, api.traveny.local)
+├── README.md       # Quick-start guide
+└── LEARN.md        # Architecture & admin troubleshooting guide
+```
+
+### 1. GHCR Authentication in Minikube
+For Kubernetes to pull private images from GitHub Container Registry (`ghcr.io/maheshkmp/traveny/...`), a `docker-registry` secret named `regcred` is provisioned:
+
+```bash
+# 1. Create namespace
+kubectl apply -f k8s/namespace.yaml
+
+# 2. Create GHCR image pull secret
+kubectl create secret docker-registry regcred \
+  --docker-server=ghcr.io \
+  --docker-username=maheshkmp \
+  --docker-password=$GHCR_TOKEN \
+  -n traveny
+
+# 3. Apply application manifests
+kubectl apply -f k8s/
+```
+
+### 2. Local Image Builds vs GHCR Pulls
+- **For fast local dev loops:** Build images directly into Minikube's Docker daemon via `eval $(minikube docker-env)`.
+- **For remote deployments:** Set `imagePullSecrets: - name: regcred` in `api.yaml` and `web.yaml` to pull directly from GHCR.
+
+### 3. Ingress Routing & Local Hosts Setup
+On Linux (Ubuntu), traffic routes natively to `minikube ip` without needing a tunnel loopback:
+```text
+# /etc/hosts
+<MINIKUBE_IP> traveny.local
+<MINIKUBE_IP> api.traveny.local
+```
+
+---
+
+## 📊 Cluster Observability & Monitoring (Prometheus & Grafana)
+
+The Minikube Kubernetes cluster includes full-stack observability using the industry-standard `kube-prometheus-stack` Helm chart.
+
+```mermaid
+graph TD
+    Pods[Traveny Pods / Nodes] -->|Scrape Metrics| Prom[Prometheus Server TSDB]
+    NodeExporter[Node Exporter] -->|CPU / RAM / Network| Prom
+    KubeState[Kube State Metrics] -->|Pod / Deployment Status| Prom
+    Prom -->|Data Source Query| Grafana[Grafana Dashboards :3001]
+    Developer[Developer / Admin] -->|http://localhost:3001| Grafana
+```
+
+### 1. Deploying the Monitoring Stack
+```bash
+# Add Prometheus Helm repository
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+# Install Prometheus + Grafana into the 'monitoring' namespace
+helm install prometheus prometheus-community/kube-prometheus-stack \
+  --namespace monitoring \
+  --create-namespace
+```
+
+### 2. Accessing Grafana
+- **Retrieve Admin Password:**
+  ```bash
+  kubectl get secret -n monitoring prometheus-grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
+  ```
+- **Port-forward Grafana Service:**
+  ```bash
+  kubectl port-forward -n monitoring svc/prometheus-grafana 3001:80
+  ```
+- Access pre-configured Kubernetes, Node, and Pod performance dashboards at **`http://localhost:3001`**.
+
+---
+
+## ☁️ AWS Cloud Provisioning via Terraform (`01-vpc-ec2-web-server`)
+
+To transition from local environments to production AWS infrastructure, Traveny utilizes Terraform for Infrastructure-as-Code (IaC).
+
+```mermaid
+graph TD
+    Client[Client / Administrator] -->|SSH :22 / HTTP :80 / HTTPS :443| IGW[AWS Internet Gateway]
+    
+    subgraph VPC ["VPC: 10.0.0.0/16"]
+        IGW --> RT[Public Route Table]
+        
+        subgraph Public Subnet ["Public Subnet: 10.0.1.0/24"]
+            RT --> SG[Security Group: terraform-web-sg]
+            
+            subgraph Security Group Rules
+                SG -->|Allow 22 from SSH IP| EC2[EC2 Instance: t3.small / t3.medium]
+                SG -->|Allow 80/443 from Anywhere| EC2
+            end
+        end
+    end
+```
+
+### Key Infrastructure Specifications:
+- **Networking:** Custom AWS VPC (`10.0.0.0/16`), Public Subnet (`10.0.1.0/24`), Internet Gateway, and Route Table.
+- **Compute:** EC2 instance (Ubuntu 24.04 LTS) running Docker Compose stack.
+- **Static Addressing:** AWS Elastic IP (EIP) assigned to ensure persistent IP address across restarts for GitHub Actions CI/CD (`VPS_HOST`).
+- **Provisioning:** Automated `user_data` boot script installs Docker, Docker Compose, sets up a 2GB swap safety file, and configures non-root docker access.
+

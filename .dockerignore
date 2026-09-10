@@ -11,3 +11,7 @@ coverage
 README.md
 certbot/
 nginx/
+terraform/
+k8s/
+.github/
+PROJECT_OVERVIEW.md

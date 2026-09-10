@@ -39,7 +39,20 @@ spec:
           mountPath: /var/lib/postgresql/data
       volumes:
       - name: db-storage
-        emptyDir: {} # Use PersistentVolumeClaim for production
+        persistentVolumeClaim:
+          claimName: db-pvc
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: db-pvc
+  namespace: traveny
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
 ---
 apiVersion: v1
 kind: Service
@@ -53,3 +66,4 @@ spec:
   - protocol: TCP
     port: 5432
     targetPort: 5432
+
