@@ -86,15 +86,21 @@ jobs:
             cd $HOME/traveny
             git fetch origin main && git reset --hard origin/main
 
-            # 2. Apply persistent services & ingress
+            # 2. Apply all Kubernetes manifests
             kubectl apply -f k8s/db.yaml
+            kubectl apply -f k8s/api.yaml
+            kubectl apply -f k8s/web.yaml
             kubectl apply -f k8s/ingress.yaml
+
+            # Wait for PostgreSQL Database to be ready
+            echo "⏳ Waiting for PostgreSQL database to be ready..."
+            kubectl rollout status deployment/db -n traveny --timeout=120s
 
             # 3. Run Database Migration Job
             echo "⏳ Running Database Migration Job..."
             kubectl delete job traveny-db-migrate -n traveny --ignore-not-found
             kubectl apply -f k8s/migration-job.yaml
-            kubectl wait --for=condition=complete job/traveny-db-migrate -n traveny --timeout=120s
+            kubectl wait --for=condition=complete job/traveny-db-migrate -n traveny --timeout=180s
 
             # 4. Rolling Update API & Web Deployments with new image tag
             echo "🔄 Updating deployments to image tag: ${{ github.sha }}"
