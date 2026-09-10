@@ -72,7 +72,7 @@ This repository demonstrates a 100% automated, production-ready DevOps infrastru
 graph TD
     Developer[Developer / Git Push] -->|push to main| GHA[GitHub Actions CI/CD Pipeline]
     
-    subgraph Job 1: Build & Push Images (GitHub Runners)
+    subgraph Build["Job 1: Build & Push Images (GitHub Runners)"]
         GHA --> Buildx[Docker Buildx Multi-Stage Compile]
         Buildx --> API_Image[ghcr.io/maheshkmp/traveny/api:sha]
         Buildx --> WEB_Image[ghcr.io/maheshkmp/traveny/web:sha]
@@ -80,7 +80,7 @@ graph TD
         WEB_Image --> GHCR
     end
     
-    subgraph Job 2: EC2 Kubernetes Deployment (SSH)
+    subgraph Deploy["Job 2: EC2 Kubernetes Deployment (SSH)"]
         GHCR --> SSH[SSH into AWS EC2 Node]
         SSH --> Apply[kubectl apply -f k8s/]
         Apply --> DB_Check[Wait for PostgreSQL 16 DB Ready]
@@ -88,7 +88,7 @@ graph TD
         Migrate --> Rollout[kubectl set image & rollout status]
     end
     
-    subgraph K8s Workloads & Ingress (EC2 Node)
+    subgraph Cluster["K8s Workloads & Ingress (EC2 Node)"]
         Rollout --> Ingress[NGINX Ingress Controller hostNetwork:true]
         CertManager[cert-manager Let's Encrypt] -->|Auto TLS| Ingress
         Ingress -->|https://traveny.com| WebPod[Web Pod :3000]
@@ -215,12 +215,12 @@ kubectl create secret docker-registry regcred \
 
 # Create production secrets
 kubectl create secret generic traveny-secrets \
-  --from-literal=postgres-user=postgres \
-  --from-literal=postgres-password=Admin123 \
-  --from-literal=postgres-db=traveny \
-  --from-literal=better-auth-secret="your-production-auth-secret" \
-  --from-literal=resend-api-key="your-resend-api-key" \
-  --from-literal=database-url="postgresql://postgres:Admin123@db-service:5432/traveny" \
+  --from-literal=postgres-user=<YOUR_DB_USER> \
+  --from-literal=postgres-password=<YOUR_DB_PASSWORD> \
+  --from-literal=postgres-db=<YOUR_DB_NAME> \
+  --from-literal=better-auth-secret=<YOUR_AUTH_SECRET> \
+  --from-literal=resend-api-key=<YOUR_RESEND_API_KEY> \
+  --from-literal=database-url="postgresql://<YOUR_DB_USER>:<YOUR_DB_PASSWORD>@db-service:5432/<YOUR_DB_NAME>" \
   -n traveny
 ```
 
