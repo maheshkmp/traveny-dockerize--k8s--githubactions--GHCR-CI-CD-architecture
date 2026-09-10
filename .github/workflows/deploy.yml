@@ -87,6 +87,7 @@ jobs:
             git fetch origin main && git reset --hard origin/main
 
             # 2. Apply all Kubernetes manifests
+            kubectl apply -f k8s/cluster-issuer.yaml --ignore-not-found
             kubectl apply -f k8s/db.yaml
             kubectl apply -f k8s/api.yaml
             kubectl apply -f k8s/web.yaml
