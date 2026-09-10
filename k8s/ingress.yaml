@@ -7,6 +7,26 @@ metadata:
     kubernetes.io/ingress.class: nginx
 spec:
   rules:
+  - host: traveny.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: web-service
+            port:
+              number: 3000
+  - host: api.traveny.com
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: api-service
+            port:
+              number: 4000
   - host: traveny.local
     http:
       paths:
@@ -27,3 +47,4 @@ spec:
             name: api-service
             port:
               number: 4000
+
