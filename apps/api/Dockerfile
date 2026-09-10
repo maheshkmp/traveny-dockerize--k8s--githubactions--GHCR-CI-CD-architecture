@@ -27,6 +27,15 @@ RUN bun build apps/api/server.ts \
   --external @neondatabase/serverless \
   --external ws
 
+# Bundle Database Migrator into single file
+RUN bun build packages/core/src/database/migrate.ts \
+  --outfile dist/migrate.js \
+  --target bun \
+  --minify \
+  --external pg \
+  --external @neondatabase/serverless \
+  --external ws
+
 # ── Stage 3: runner ────────────────────────────────────────
 FROM oven/bun:1-slim AS runner
 WORKDIR /app
@@ -35,6 +44,8 @@ ENV NODE_ENV=production
 ENV PORT=4000
 
 COPY --from=builder /app/dist/server.js ./server.js
+COPY --from=builder /app/dist/migrate.js ./migrate.js
+COPY --from=builder /app/packages/core/src/database/migrations ./src/database/migrations
 
 # Install external dependencies so all transitive deps (like pg-types, postgres-bytea) are included correctly
 RUN bun add pg @neondatabase/serverless ws

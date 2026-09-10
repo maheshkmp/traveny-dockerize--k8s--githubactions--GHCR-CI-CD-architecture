@@ -14,7 +14,7 @@ spec:
       - name: db-migrate
         image: ghcr.io/maheshkmp/traveny/api:latest
         imagePullPolicy: Always
-        command: ["bun", "run", "db:migrate"]
+        command: ["bun", "migrate.js"]
         env:
         - name: DATABASE_URL
           valueFrom:
